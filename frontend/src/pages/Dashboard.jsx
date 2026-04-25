@@ -11,7 +11,7 @@ useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
 
     const res = await axios.get(
-      `http://localhost:5000/user/${user._id}`
+      `https://resume-analyzer-wnyu.onrender.com/user/${user._id}`
     );
 
     setHistory(res.data.history);

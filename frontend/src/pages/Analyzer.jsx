@@ -22,7 +22,7 @@ function Analyzer({ setLastResult }) {
       setLoading(true);
 
       const response = await axios.post(
-        "http://localhost:5000/analyze",
+        `${import.meta.env.VITE_API_URL}/analyze`,
         { resumeText }
       );
 
@@ -48,7 +48,7 @@ function Analyzer({ setLastResult }) {
       setLoading(false);
     }
 
-    await axios.post("http://localhost:5000/save-analysis", {
+    await axios.post(`${import.meta.env.VITE_API_URL}/save-analysis`, {
   userId: JSON.parse(localStorage.getItem("user"))._id,
   text: resumeText,
   result: data

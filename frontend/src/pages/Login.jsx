@@ -26,8 +26,8 @@ function Login({ setUser, setActivePage }) {
   const handleAuth = async () => {
     try {
       const url = isSignup
-        ? "http://localhost:5000/signup"
-        : "http://localhost:5000/login";
+        ? "https://resume-analyzer-wnyu.onrender.com/signup"
+        : "https://resume-analyzer-wnyu.onrender.com/login";
 
       const res = await axios.post(url, { email, password });
 
