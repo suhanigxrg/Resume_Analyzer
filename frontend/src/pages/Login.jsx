@@ -26,8 +26,8 @@ function Login({ setUser, setActivePage }) {
   const handleAuth = async () => {
     try {
       const url = isSignup
-        ? "https://resume-analyzer-wnyu.onrender.com/signup"
-        : "https://resume-analyzer-wnyu.onrender.com/login";
+        ? `${import.meta.env.VITE_API_URL}/signup`
+        : `${import.meta.env.VITE_API_URL}/login`;
 
       const res = await axios.post(url, { email, password });
 
