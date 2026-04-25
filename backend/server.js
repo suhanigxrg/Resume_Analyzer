@@ -6,8 +6,9 @@ const analyzeResume = require("./analyzer");
 
 const app = express();
 const mongoose = require("mongoose");
-
-mongoose.connect("mongodb://127.0.0.1:27017/resumeAI")
+require("dotenv").config();
+mongoose.connect(process.env.MONGO_URI)
+// mongoose.connect("mongodb://127.0.0.1:27017/resumeAI")
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
 // Middleware
