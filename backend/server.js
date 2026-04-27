@@ -55,34 +55,32 @@ app.post("/signup", async (req, res) => {
 
 // LOGIN
 app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-
-  const user = await User.findOne({ email, password });
-
-  if (!user) {
-    return res.status(400).json({ error: "Invalid credentials" });
-  }
-
-  res.json(user);
-});
-
-app.post("/save-analysis", async (req, res) => {
-  const { userId, text, result } = req.body;
-
   try {
-    const user = await User.findById(userId);
+    console.log("LOGIN BODY:", req.body);
 
-    user.history.unshift({ text, result });
+    const { email, password } = req.body;
 
-    await user.save();
+    if (!email || !password) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
 
-    res.json({ message: "Saved successfully" });
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ error: "User not found" });
+    }
+
+    if (user.password !== password) {
+      return res.status(400).json({ error: "Wrong password" });
+    }
+
+    res.json(user);
 
   } catch (err) {
-    res.status(500).json({ error: "Failed to save" });
+    console.error("LOGIN ERROR:", err);
+    res.status(500).json({ error: "Login failed" });
   }
 });
-
 
 // Test route
 app.get("/", (req, res) => {
