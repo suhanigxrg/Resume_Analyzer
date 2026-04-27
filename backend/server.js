@@ -14,22 +14,43 @@ mongoose.connect(process.env.MONGO_URI)
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.json());
 
 const User = require("./models/User");
 
 // SIGNUP
 app.post("/signup", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    console.log("BODY:", req.body); // 🔍 debug
 
-  const user = new User({
-    email,
-    password,
-    history: []
-  });
+    const { email, password } = req.body;
 
-  await user.save();
+    // check if empty
+    if (!email || !password) {
+      return res.status(400).json({ error: "Missing email or password" });
+    }
 
-  res.json({ message: "User created" });
+    // check existing user
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: "User already exists" });
+    }
+
+    // create new user
+    const user = new User({
+      email,
+      password,
+      history: []
+    });
+
+    await user.save();
+
+    res.json({ message: "Signup successful" });
+
+  } catch (err) {
+    console.error("SIGNUP ERROR:", err);
+    res.status(500).json({ error: "Signup failed" });
+  }
 });
 
 // LOGIN
